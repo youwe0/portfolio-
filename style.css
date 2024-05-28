@@ -348,6 +348,9 @@ footer .column > a:hover{
 
 
 @media (width < 900px){
+     #cursor{
+        display: none;
+    }
     .nav-links{
         display: none;
     }
