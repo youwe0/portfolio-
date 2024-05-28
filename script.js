@@ -24,3 +24,16 @@ link2.addEventListener('click', () => {
 link3.addEventListener('click', () => {
     scrollToElement('.column');
 });
+
+
+//  cursor making 
+var body = document.querySelector("body")
+var cursor = document.querySelector("#cursor")
+body.addEventListener("mousemove", function (dets) {
+    gsap.to(cursor, {
+        x: dets.x,
+        y: dets.y,
+        duration1:2,
+        ease: "bounce.out",   
+    })
+})
