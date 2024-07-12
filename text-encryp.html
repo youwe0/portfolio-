@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title> Text Encryptor --- YOUWE </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to top, rgb(71, 66, 66),rgb(202, 72, 72));
+}
+
+h1{
+    margin-bottom: 50px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.container{
+    width: 500px;
+    background-color: #bca4a4;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+    border-radius: 1rem;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);
+}
+
+label{
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+textarea, input{
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #999;
+    resize: none;
+}
+
+.buttons{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+button{
+    padding: 10px;
+    font-size: 15px;
+    width: 50%;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #35302d;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+h2{
+    margin-bottom: 10px;
+    font-size: 1.7rem;
+    font-weight: 500;
+}
+
+#result{
+    font-size: 13px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    min-height: 100px;
+    overflow: hidden;
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>YOUWE's Text Encryptor</h1>
+        <label for="message">Message :</label>
+        <textarea id="message" rows="5"
+            cols="50" placeholder="This is a secret message to encrypt"></textarea>
+        <label for="key">Key :</label>
+        <input type="text" id="key" value="youwe" size="50">
+        <div class="buttons">
+            <button id="enc-btn">Encrypt</button>
+            <button id="dec-btn">Decrypt</button>
+        </div>
+
+        <h2>Result:</h2>
+        <div id="result"></div>
+
+    </div>
+<script>
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!'_-&@#$%*()/:<>|+= ";
+
+// Encryption function
+function encryptText(text, key) {
+    let encryptedText = "";
+
+    for (let i = 0; i < text.length; i++) {
+        const textChar = text[i];
+        const keyChar = key[i % key.length];
+
+        const textIndex = alphabet.indexOf(textChar);
+        const keyIndex = alphabet.indexOf(keyChar);
+
+        if (textIndex === -1) {
+            encryptText += textChar;
+        } else {
+            const newIndex = (textIndex + keyIndex) % alphabet.length;
+            encryptedText += alphabet[newIndex];
+        }
+    }
+
+    return encryptedText;
+}
+
+// Decrypt function
+function decryptText(encryptedText, key) {
+    let decryptedText = "";
+
+    for (let i = 0; i < encryptedText.length; i++) {
+        const encryptedChar = encryptedText[i];
+        const keyChar = key[i % key.length];
+
+        const encryptedIndex = alphabet.indexOf(encryptedChar);
+        const keyIndex = alphabet.indexOf(keyChar);
+
+        if (encryptedText === -1) {
+            decryptedText += encryptedChar;
+        } else {
+            let newIndex = encryptedIndex - keyIndex;
+            if (newIndex < 0) newIndex += alphabet.length;
+            decryptedText += alphabet[newIndex];
+        }
+    }
+
+    return decryptedText;
+}
+
+// Update result based on selected operation (enc or dec)
+function updateResult(isEncrypting) {
+    const text = document.getElementById("message").value;
+    const key = document.getElementById("key").value;
+
+    let result = "";
+
+    if (isEncrypting) {
+        result = encryptText(text, key);
+    } else {
+        result = decryptText(text, key);
+    }
+
+    document.getElementById("result").textContent = result;
+}
+
+// Add event listeners to buttons
+document.getElementById("enc-btn").addEventListener('click', function () {
+    updateResult(true);
+});
+
+document.getElementById("dec-btn").addEventListener('click', function () {
+    updateResult(false);
+});
+
+// Initialize the result with encrypted text when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    updateResult(true);
+});
+</script>
+
+    <!-- <script src="index.js"></script> -->
+</body>
+
+</html>
